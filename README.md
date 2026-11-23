@@ -46,3 +46,14 @@ student-productivity-hub/
 ├── script.js
 └── README.md
 ```
+## Developer
+
+**Name:** Brindha J
+
+**GitHub:** [@brindhajosphinj-droid](https://github.com/brindhajosphinj-droid)
+
+**Project:** Student Productivity Hub
+
+This project was developed as a practical demonstration of frontend development, UI/UX design, and JavaScript programming skills.
+
+I used GitHub Copilot as a coding assistant during development and testing.

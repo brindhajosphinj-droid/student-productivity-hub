@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f7fb" />
+    <meta name="description" content="A calm, organized workspace for student tasks, assignments, study sessions, notes, and progress." />
+    <title>Student Productivity Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+        <a class="brand" href="#dashboard" aria-label="Student Productivity Hub home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none"><path d="M7 8.5A3.5 3.5 0 0 1 10.5 5H25v19H10.5A3.5 3.5 0 0 0 7 27.5v-19Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M7 9h15M12 14h8M12 18h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+          <span class="brand-copy"><strong>studyflow</strong><small>STUDENT HUB</small></span>
+        </a>
+        <div class="sidebar-label">WORKSPACE</div>
+        <nav class="nav-list" aria-label="Workspace">
+          <button class="nav-link active" type="button" data-view="dashboard"><span class="nav-icon">⌂</span>Overview</button>
+          <button class="nav-link" type="button" data-view="tasks"><span class="nav-icon">✓</span>My tasks<span class="nav-count" id="navTaskCount">0</span></button>
+          <button class="nav-link" type="button" data-view="assignments"><span class="nav-icon">▤</span>Assignments</button>
+          <button class="nav-link" type="button" data-view="planner"><span class="nav-icon">◷</span>Study planner</button>
+          <button class="nav-link" type="button" data-view="notes"><span class="nav-icon">▧</span>My notes</button>
+          <button class="nav-link" type="button" data-view="analytics"><span class="nav-icon">⌁</span>Analytics</button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="focus-card">
+            <div class="focus-icon">✦</div>
+            <strong>Small steps add up.</strong>
+            <p>A little progress each day goes a long way.</p>
+            <div class="focus-decoration" aria-hidden="true"></div>
+          </div>
+          <button class="nav-link theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme">
+            <span class="nav-icon theme-icon" aria-hidden="true">☾</span><span id="themeLabel">Dark mode</span>
+          </button>
+          <div class="profile">
+            <div class="avatar" aria-hidden="true">AJ</div>
+            <div class="profile-copy"><strong>Alex Johnson</strong><span>Computer Science</span></div>
+            <span class="profile-menu" aria-hidden="true">···</span>
+          </div>
+        </div>
+      </aside>
+
+      <div class="sidebar-scrim" id="sidebarScrim"></div>
+      <main class="main-content">
+        <header class="topbar">
+          <div class="topbar-left">
+            <button class="icon-button mobile-menu" id="menuToggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
+            <div class="breadcrumb"><span>Workspace</span><span class="breadcrumb-separator">/</span><strong id="breadcrumbCurrent">Overview</strong></div>
+          </div>
+          <div class="topbar-right">
+            <div class="today-chip"><span class="today-dot"></span><span id="todayLabel"></span></div>
+            <button class="primary-button top-add-button" type="button" data-action="add-task"><span aria-hidden="true">＋</span> New task</button>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <section class="view-panel active" id="view-dashboard" aria-labelledby="welcomeTitle">
+            <div class="welcome-row">
+              <div>
+                <p class="eyebrow" id="welcomeDate">YOUR STUDY SPACE</p>
+                <h1 id="welcomeTitle">Good morning, Alex <span class="wave" aria-hidden="true">✦</span></h1>
+                <p class="page-subtitle">A fresh day to make progress. Here’s your overview.</p>
+              </div>
+              <button class="secondary-button" type="button" data-view-link="planner"><span aria-hidden="true">◷</span> View my schedule</button>
+            </div>
+
+            <div class="stats-grid" id="statsGrid">
+              <article class="stat-card">
+                <div class="stat-top"><span class="stat-label">Tasks completed</span><span class="stat-icon purple">✓</span></div>
+                <div class="stat-value" id="completedStat">0<span class="stat-total"> / 0</span></div>
+                <div class="stat-foot"><span class="trend-positive">↗ <span id="completionRate">0%</span></span><span>completion rate</span></div>
+                <div class="mini-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              </article>
+              <article class="stat-card">
+                <div class="stat-top"><span class="stat-label">Study time</span><span class="stat-icon blue">◷</span></div>
+                <div class="stat-value"><span id="studyHours">0</span><span class="stat-unit"> hrs</span></div>
+                <div class="stat-foot"><span class="stat-foot-strong">Past 7 days</span><span>logged study time</span></div>
+                <div class="mini-bars mini-bars-blue" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              </article>
+              <article class="stat-card">
+                <div class="stat-top"><span class="stat-label">Due this week</span><span class="stat-icon orange">▤</span></div>
+                <div class="stat-value" id="dueStat">0</div>
+                <div class="stat-foot"><span class="stat-foot-strong">Stay ahead</span><span>upcoming assignments</span></div>
+                <div class="mini-bars mini-bars-orange" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              </article>
+              <article class="stat-card">
+                <div class="stat-top"><span class="stat-label">Current streak</span><span class="stat-icon pink">✦</span></div>
+                <div class="stat-value"><span id="streakStat">0</span><span class="stat-unit"> days</span></div>
+                <div class="stat-foot"><span class="trend-positive">You’re on a roll!</span></div>
+                <div class="streak-dots" id="streakDots" aria-hidden="true"></div>
+              </article>
+            </div>
+
+            <div class="dashboard-grid">
+              <section class="panel activity-panel">
+                <div class="panel-heading">
+                  <div><h2>Activity overview</h2><p>Your productivity at a glance</p></div>
+                  <select class="select-control compact-select" id="activityRange" aria-label="Activity chart range">
+                    <option value="week">This week</option><option value="month">This month</option>
+                  </select>
+                </div>
+                <div class="chart-wrap"><canvas id="activityChart" role="img" aria-label="Weekly task activity chart"></canvas><p class="chart-fallback" id="activityChartFallback" hidden>Charts need an internet connection to load. Your data is saved locally.</p></div>
+              </section>
+              <section class="panel upcoming-panel">
+                <div class="panel-heading">
+                  <div><h2>Upcoming deadlines</h2><p>Keep an eye on what’s next</p></div>
+                  <button class="text-button" type="button" data-view-link="assignments">See all <span aria-hidden="true">→</span></button>
+                </div>
+                <div class="upcoming-list" id="upcomingList"></div>
+              </section>
+              <section class="panel tasks-panel">
+                <div class="panel-heading">
+                  <div><h2>Today’s tasks</h2><p>A focused list for today</p></div>
+                  <button class="text-button" type="button" data-view-link="tasks">View all <span aria-hidden="true">→</span></button>
+                </div>
+                <div class="task-preview-list" id="dashboardTasks"></div>
+              </section>
+              <section class="panel schedule-panel">
+                <div class="panel-heading">
+                  <div><h2>Today’s schedule</h2><p>Make time for what matters</p></div>
+                  <button class="text-button" type="button" data-view-link="planner">Full planner <span aria-hidden="true">→</span></button>
+                </div>
+                <div class="schedule-list" id="dashboardSchedule"></div>
+              </section>
+            </div>
+          </section>
+
+          <section class="view-panel" id="view-tasks" aria-labelledby="tasksTitle" hidden>
+            <div class="page-heading-row"><div><p class="eyebrow">STAY ON TRACK</p><h1 id="tasksTitle">My tasks</h1><p class="page-subtitle">Turn your to-dos into done.</p></div><button class="primary-button" type="button" data-action="add-task">＋ Add a task</button></div>
+            <section class="panel full-panel">
+              <div class="list-toolbar"><div class="filter-tabs" role="group" aria-label="Filter tasks"><button class="filter-tab active" data-task-filter="all" type="button">All <span id="allTaskCount">0</span></button><button class="filter-tab" data-task-filter="active" type="button">In progress <span id="activeTaskCount">0</span></button><button class="filter-tab" data-task-filter="completed" type="button">Completed <span id="doneTaskCount">0</span></button></div><label class="search-field"><span aria-hidden="true">⌕</span><input id="taskSearch" type="search" placeholder="Search tasks" aria-label="Search tasks" /></label></div>
+              <div id="taskList" class="managed-list"></div>
+            </section>
+          </section>
+
+          <section class="view-panel" id="view-assignments" aria-labelledby="assignmentsTitle" hidden>
+            <div class="page-heading-row"><div><p class="eyebrow">DEADLINES, MADE CLEAR</p><h1 id="assignmentsTitle">Assignments</h1><p class="page-subtitle">Plan ahead and hand in your best work.</p></div><button class="primary-button" type="button" data-action="add-assignment">＋ Add assignment</button></div>
+            <div class="assignment-summary" id="assignmentSummary"></div>
+            <section class="panel full-panel"><div class="panel-heading assignment-list-heading"><div><h2>All assignments</h2><p>Sorted by due date</p></div><select class="select-control" id="assignmentFilter" aria-label="Filter assignments"><option value="all">All assignments</option><option value="upcoming">Upcoming</option><option value="submitted">Submitted</option></select></div><div id="assignmentList" class="managed-list"></div></section>
+          </section>
+
+          <section class="view-panel" id="view-planner" aria-labelledby="plannerTitle" hidden>
+            <div class="page-heading-row"><div><p class="eyebrow">MAKE ROOM TO FOCUS</p><h1 id="plannerTitle">Study planner</h1><p class="page-subtitle">Build a routine that works for you.</p></div><button class="primary-button" type="button" data-action="add-session">＋ Add study session</button></div>
+            <section class="panel full-panel planner-panel"><div class="panel-heading"><div><h2>Your weekly plan</h2><p>Sessions are organized by day</p></div><div class="week-label" id="weekLabel"></div></div><div id="plannerDays" class="planner-days"></div></section>
+          </section>
+
+          <section class="view-panel" id="view-notes" aria-labelledby="notesTitle" hidden>
+            <div class="page-heading-row"><div><p class="eyebrow">IDEAS, IN ONE PLACE</p><h1 id="notesTitle">My notes</h1><p class="page-subtitle">Capture a thought before it slips away.</p></div><button class="primary-button" type="button" data-action="add-note">＋ New note</button></div>
+            <div class="notes-toolbar"><label class="search-field"><span aria-hidden="true">⌕</span><input id="noteSearch" type="search" placeholder="Search your notes" aria-label="Search notes" /></label><span id="noteCount" class="muted-copy"></span></div>
+            <div class="notes-grid" id="notesGrid"></div>
+          </section>
+
+          <section class="view-panel" id="view-analytics" aria-labelledby="analyticsTitle" hidden>
+            <div class="page-heading-row"><div><p class="eyebrow">YOUR PROGRESS, OVER TIME</p><h1 id="analyticsTitle">Progress analytics</h1><p class="page-subtitle">Notice your momentum and celebrate the little wins.</p></div></div>
+            <div class="analytics-stats" id="analyticsStats"></div>
+            <div class="analytics-grid">
+              <section class="panel analytics-chart-panel"><div class="panel-heading"><div><h2>Task completion</h2><p>Completed and remaining tasks</p></div></div><div class="chart-wrap large-chart"><canvas id="completionChart" role="img" aria-label="Task completion doughnut chart"></canvas><p class="chart-fallback" id="completionChartFallback" hidden>Charts need an internet connection to load. Your data is saved locally.</p></div></section>
+              <section class="panel analytics-chart-panel"><div class="panel-heading"><div><h2>Study time</h2><p>Hours by subject, past 7 days</p></div></div><div class="chart-wrap large-chart"><canvas id="studyChart" role="img" aria-label="Study time by subject chart"></canvas><p class="chart-fallback" id="studyChartFallback" hidden>Charts need an internet connection to load. Your data is saved locally.</p></div></section>
+            </div>
+          </section>
+          <footer class="app-footer"><span>Made for steady progress, one day at a time.</span><span>Studyflow <span aria-hidden="true">✦</span></span></footer>
+        </div>
+      </main>
+    </div>
+
+    <dialog class="app-dialog" id="itemDialog" aria-labelledby="dialogTitle">
+      <form class="dialog-card" id="itemForm" novalidate>
+        <div class="dialog-heading"><div><p class="eyebrow" id="dialogEyebrow">YOUR WORKSPACE</p><h2 id="dialogTitle">Add item</h2></div><button class="icon-button close-dialog" type="button" data-close-dialog aria-label="Close dialog">×</button></div>
+        <div class="dialog-fields" id="dialogFields"></div>
+        <p class="form-error" id="formError" role="alert" hidden></p>
+        <div class="dialog-actions"><button class="secondary-button" type="button" data-close-dialog>Cancel</button><button class="primary-button" id="saveItemButton" type="submit">Save</button></div>
+      </form>
+    </dialog>
+    <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>
